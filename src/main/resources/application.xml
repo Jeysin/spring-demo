@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="student" class="com.jeysin.Student">
+        <property name="printStream" value="#{T(System).out}"/>
+    </bean>
+
+    <bean id="service" class="com.jeysin.Service">
+        <constructor-arg ref="student"/>
+    </bean>
+
+    <bean id="logger" class="com.jeysin.Logger"/>
+
+    <aop:config>
+        <aop:aspect ref="logger">
+            <aop:pointcut id="match" expression="execution(* *.sayHello(..))"/>
+
+            <aop:before pointcut-ref="match" method="before"/>
+
+            <aop:after pointcut-ref="match" method="after"/>
+        </aop:aspect>
+    </aop:config>
+    <!--
+    <aop:config>
+        <aop:aspect ref="minstrel">
+            <aop:pointcut id="embark"
+                          expression="execution(* *.embarkOnQuest(..))"/>
+
+            <aop:before pointcut-ref="embark"
+                        method="singBeforeQuest"/>
+
+            <aop:after pointcut-ref="embark"
+                       method="singAfterQuest"/>
+        </aop:aspect>
+    </aop:config>
+    -->
+
+</beans>
